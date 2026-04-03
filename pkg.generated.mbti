@@ -1,0 +1,129 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Yoorkin/any"
+
+import {
+  "moonbitlang/core/argparse",
+  "moonbitlang/core/bench",
+  "moonbitlang/core/bigint",
+  "moonbitlang/core/buffer",
+  "moonbitlang/core/cmp",
+  "moonbitlang/core/coverage",
+  "moonbitlang/core/debug",
+  "moonbitlang/core/deque",
+  "moonbitlang/core/encoding/ascii",
+  "moonbitlang/core/encoding/base64",
+  "moonbitlang/core/encoding/utf16",
+  "moonbitlang/core/encoding/utf8",
+  "moonbitlang/core/json",
+  "moonbitlang/core/list",
+  "moonbitlang/core/queue",
+  "moonbitlang/core/quickcheck/splitmix",
+  "moonbitlang/core/random",
+  "moonbitlang/core/ref",
+  "moonbitlang/core/set",
+  "moonbitlang/core/string",
+  "moonbitlang/core/test",
+}
+
+// Values
+pub fn[T : TypeInfo] any(T) -> Any
+
+// Errors
+
+// Types and methods
+type Any derive(@debug.Debug)
+#callsite(autofill(loc))
+pub fn[T : TypeInfo] Any::dyn_cast(Self, loc~ : SourceLoc) -> T raise
+pub fn Any::id(Self) -> TypeId
+pub fn[T : TypeInfo] Any::new(T) -> Self
+pub fn[T : TypeInfo] Any::unsafe_cast(Self) -> T
+
+pub struct TypeId {
+  pkg : String
+  ctor : String
+  generics : Array[TypeId]
+
+  fn new(String, String, Array[TypeId]) -> TypeId
+} derive(Compare, Eq, @debug.Debug)
+pub fn TypeId::new(String, String, Array[Self]) -> Self
+pub impl Show for TypeId
+
+pub struct Wrapper[T] {
+  id : TypeId
+  // private fields
+
+  fn[T] new(TypeId, box~ : (T) -> Error, unbox~ : (Error) -> T raise) -> Wrapper[T]
+}
+pub fn[T] Wrapper::box(Self[T], T) -> Error
+pub fn[T] Wrapper::new(TypeId, box~ : (T) -> Error, unbox~ : (Error) -> T raise) -> Self[T]
+pub fn[T] Wrapper::unbox(Self[T], Error) -> T raise
+
+// Type aliases
+
+// Traits
+pub(open) trait TypeInfo {
+  wrapper() -> Wrapper[Self]
+}
+pub impl TypeInfo for Bool
+pub impl TypeInfo for Int
+pub impl TypeInfo for Int16
+pub impl TypeInfo for Int64
+pub impl TypeInfo for UInt
+pub impl TypeInfo for UInt16
+pub impl TypeInfo for UInt64
+pub impl TypeInfo for Float
+pub impl TypeInfo for Double
+pub impl TypeInfo for String
+pub impl TypeInfo for Bytes
+pub impl TypeInfo for @argparse.ArgGroup
+pub impl TypeInfo for @argparse.Command
+pub impl TypeInfo for @argparse.FlagAction
+pub impl TypeInfo for @argparse.FlagArg
+pub impl TypeInfo for @argparse.Matches
+pub impl TypeInfo for @argparse.OptionAction
+pub impl TypeInfo for @argparse.OptionArg
+pub impl TypeInfo for @argparse.PositionArg
+pub impl TypeInfo for @argparse.ValueRange
+pub impl TypeInfo for @argparse.ValueSource
+pub impl TypeInfo for @bench.Bench
+pub impl TypeInfo for @bench.Summary
+pub impl TypeInfo for @bench.Timestamp
+pub impl TypeInfo for @bigint.BigInt
+pub impl TypeInfo for @buffer.Buffer
+pub impl[T : TypeInfo] TypeInfo for Array[T]
+pub impl TypeInfo for Json
+pub impl[T : TypeInfo] TypeInfo for @cmp.Reverse[T]
+pub impl TypeInfo for @coverage.CoverageCounter
+pub impl[T : TypeInfo] TypeInfo for @deque.Deque[T]
+pub impl TypeInfo for @ascii.Malformed
+pub impl TypeInfo for @base64.Malformed
+pub impl TypeInfo for @utf16.Endian
+pub impl TypeInfo for @utf16.Malformed
+pub impl TypeInfo for @utf8.Malformed
+pub impl[K : TypeInfo + Hash + Eq, V : TypeInfo] TypeInfo for @moonbitlang/core/hashmap.HashMap[K, V]
+pub impl[K : TypeInfo + Hash + Eq] TypeInfo for @moonbitlang/core/hashset.HashSet[K]
+pub impl[K : TypeInfo + Hash + Eq, V : TypeInfo] TypeInfo for @moonbitlang/core/immut/hashmap.HashMap[K, V]
+pub impl[K : TypeInfo + Hash + Eq] TypeInfo for @moonbitlang/core/immut/hashset.HashSet[K]
+pub impl[T : TypeInfo + Compare] TypeInfo for @moonbitlang/core/immut/priority_queue.PriorityQueue[T]
+pub impl[K : TypeInfo + Compare, V : TypeInfo] TypeInfo for @moonbitlang/core/immut/sorted_map.SortedMap[K, V]
+pub impl[T : TypeInfo + Compare] TypeInfo for @moonbitlang/core/immut/sorted_set.SortedSet[T]
+pub impl TypeInfo for @json.JsonDecodeError
+pub impl TypeInfo for @json.JsonPath
+pub impl TypeInfo for @json.ParseError
+pub impl TypeInfo for @json.Position
+pub impl TypeInfo for @json.Replacer
+pub impl[T : TypeInfo] TypeInfo for @list.List[T]
+pub impl[T : TypeInfo + Compare] TypeInfo for @moonbitlang/core/priority_queue.PriorityQueue[T]
+pub impl[T : TypeInfo] TypeInfo for @queue.Queue[T]
+pub impl TypeInfo for @splitmix.RandomState
+pub impl TypeInfo for @random.Rand
+pub impl[T : TypeInfo] TypeInfo for @ref.Ref[T]
+pub impl[K : TypeInfo + Hash + Eq] TypeInfo for @set.Set[K]
+pub impl[K : TypeInfo + Compare, V : TypeInfo] TypeInfo for @moonbitlang/core/sorted_map.SortedMap[K, V]
+pub impl[T : TypeInfo + Compare] TypeInfo for @moonbitlang/core/sorted_set.SortedSet[T]
+pub impl TypeInfo for @string.MatchResult
+pub impl TypeInfo for @string.Regex
+pub impl TypeInfo for @test.Test
+pub impl TypeInfo for BytesView
+pub impl TypeInfo for StringView
+
