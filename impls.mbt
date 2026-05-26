@@ -646,9 +646,7 @@ pub impl[K : Anyable + Hash + Eq, V : Anyable] Anyable for @immut_hashmap.HashMa
   let v : Iso[V] = Anyable::iso()
   {
     id: TypeId("moonbitlang/core/immut/hashmap", "HashMap", [k.id, v.id]),
-    box: xs => {
-      ImmutHashMap(xs.to_array().map(p => (Any(p.0), Any(p.1))))
-    },
+    box: xs => ImmutHashMap(xs.to_array().map(p => (Any(p.0), Any(p.1)))),
     unbox: box => {
       guard box is ImmutHashMap(arr)
       @immut_hashmap.from_array(
@@ -824,9 +822,7 @@ pub impl[K : Anyable + Compare, V : Anyable] Anyable for @immut_sorted_map.Sorte
   {
     id: TypeId("moonbitlang/core/immut/sorted_map", "SortedMap", [k.id, v.id]),
     box: xs => {
-      ImmutSortedMap(
-        xs.iter().map(p => (Any(p.0), Any(p.1))).collect(),
-      )
+      ImmutSortedMap(xs.iter().map(p => (Any(p.0), Any(p.1))).collect())
     },
     unbox: box => {
       guard box is ImmutSortedMap(arr)
