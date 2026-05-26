@@ -8,8 +8,8 @@ without JSON/string serialization.
 ```mbt check
 ///|
 test "Any and dyn_cast" {
-  let s = Any::new(false)
-  let a = Any::new([1, 2, 3])
+  let s = Any(false)
+  let a = Any([1, 2, 3])
   debug_inspect((s.dyn_cast() : Bool), content="false")
   debug_inspect((a.dyn_cast() : Array[Int]), content="[1, 2, 3]")
 }
@@ -33,7 +33,7 @@ test "Any and dyn_cast" {
   ```mbt check
   ///|
   test "dyn_cast failed" {
-    let a = Any::new(false)
+    let a = Any(false)
     debug_inspect(
       try? (a.dyn_cast() : Int),
       content=(
@@ -53,28 +53,25 @@ test "Any and dyn_cast" {
   } derive(Debug)
 
   ///|
-  suberror Custom {
+  extenum @any.Payload += {
     Pos(Pos)
   }
 
   ///|
-  impl TypeInfo for Pos with wrapper() {
-    fn box(p : Pos) -> Error {
-      Pos(p)
-    }
-    fn unbox(e : Error) raise {
-      if e is Pos(p) {
+  impl Anyable for Pos with fn iso() {
+    {
+      id: TypeId("my/pkg", "Pos", []),
+      box: p => Pos(p),
+      unbox: payload => {
+        guard payload is Pos(p)
         p
-      } else {
-        fail("")
-      }
+      },
     }
-    Wrapper(TypeId("@my/pkg", "Pos", []), box~, unbox~)
   }
 
   ///|
   test {
-    let p = Any::new({ x: 10, y: 20 })
+    let p = Any({ x: 10, y: 20 })
     debug_inspect(
       (p.dyn_cast() : Pos),
       content=(
