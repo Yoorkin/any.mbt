@@ -30,9 +30,7 @@ import {
 // Errors
 
 // Types and methods
-pub struct Any {
-  // private fields
-}
+type Any
 pub fn[T : Anyable] Any::Any(T) -> Self
 #callsite(autofill(loc))
 pub fn[T : Anyable] Any::dyn_cast(Self, loc~ : SourceLoc) -> T raise

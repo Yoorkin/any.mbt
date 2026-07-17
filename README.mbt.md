@@ -8,10 +8,19 @@ without JSON/string serialization.
 ```mbt check
 ///|
 test "Any and dyn_cast" {
-  let s = Any(false)
-  let a = Any([1, 2, 3])
-  debug_inspect((s.dyn_cast() : Bool), content="false")
-  debug_inspect((a.dyn_cast() : Array[Int]), content="[1, 2, 3]")
+  let a : @any.Any = Any(false)
+  let b : @any.Any = Any([1, 2, 3])
+  let c : Bool = a.dyn_cast()
+  let d : Array[Int] = b.dyn_cast()
+  let e : Result[Int, _] = try? b.dyn_cast()
+  debug_inspect(c, content="false")
+  debug_inspect(d, content="[1, 2, 3]")
+  debug_inspect(
+    e,
+    content=(
+      #|Err(Failure("failed to cast Array[Int] to Int"))
+    ),
+  )
 }
 ```
 
@@ -37,7 +46,7 @@ test "Any and dyn_cast" {
     debug_inspect(
       try? (a.dyn_cast() : Int),
       content=(
-        #|Err(Failure("README.mbt.md:38:13-38:25@Yoorkin/any FAILED: failed to cast Bool to Int"))
+        #|Err(Failure("README.mbt.md:50:13-50:25@Yoorkin/any FAILED: failed to cast Bool to Int"))
       ),
     )
   }
@@ -71,12 +80,8 @@ test "Any and dyn_cast" {
 
   ///|
   test {
-    let p = Any({ x: 10, y: 20 })
-    debug_inspect(
-      (p.dyn_cast() : Pos),
-      content=(
-        #|{ x: 10, y: 20 }
-      ),
-    )
+    let a = Any({ x: 10, y: 20 })
+    let b : Pos = a.dyn_cast()
+    debug_inspect(b, content="{ x: 10, y: 20 }")
   }
   ```
